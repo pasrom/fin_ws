@@ -7,6 +7,7 @@ import numpy
 
 # Messages
 from std_msgs.msg import Float32
+from std_msgs.msg import UInt64MultiArray
 
 # Query GoPiGo robot for left and right wheel encoders.
 # Publish the estimated left and right angular wheel velocities
@@ -20,17 +21,23 @@ class WheelEncoderPublisher:
     self.lwheel_angular_vel_control_pub = rospy.Subscriber('lwheel_angular_vel_control', Float32, self.lwheel_angular_vel_control_callback)
     self.rwheel_angular_vel_control_pub = rospy.Subscriber('rwheel_angular_vel_control', Float32, self.rwheel_angular_vel_control_callback)
 
+    self.LRwheel_encoder_pub = rospy.Subscriber('robot/inkLR', UInt64MultiArray, self.LRwheel_encoder_callback)
 
     self.lwheel_angular_vel_enc_pub = rospy.Publisher('lwheel_angular_vel_enc', Float32, queue_size=10)
     self.rwheel_angular_vel_enc_pub = rospy.Publisher('rwheel_angular_vel_enc', Float32, queue_size=10)
+
     self.rate = rospy.get_param('~rate', 10)
     self.err_tick_incr = rospy.get_param('~err_tick_incr',20) # Filter out clearly erroneous encoder readings
     self.time_prev_update = rospy.Time.now();
     self.gopigo_on = rospy.get_param('~gopigo_on',True)
+    self.leftCtr = 0
+    self.rightCtr = 0
     if self.gopigo_on:
-      import gopigo   
-      self.lwheel_encs = [gopigo.enc_read(1)]*5
-      self.rwheel_encs = [gopigo.enc_read(0)]*5
+      #import gopigo   
+      #self.lwheel_encslwheel_encs = [gopigo.enc_read(1)]*5
+      #self.rwheel_encs = [gopigo.enc_read(0)]*5
+      self.lwheel_encs = [self.leftCtr]*5
+      self.rwheel_encs = [self.rightCtr]*5
     self.R = rospy.get_param('~robot_wheel_radius', .03)
 
     # Need a little hack to incorporate direction wheels are spinning
@@ -38,6 +45,11 @@ class WheelEncoderPublisher:
     self.rwheel_dir = 1;
     self.rwheel_angular_vel_control = 0;
     self.lwheel_angular_vel_control = 0;
+    
+
+  def LRwheel_encoder_callback(self, msg):
+    self.leftCtr = msg.data[0]
+    self.rightCtr = msg.data[1]
 
   # Really bad hack to get motor spin direction
   def lwheel_angular_vel_motor_callback(self,msg):
@@ -59,9 +71,9 @@ class WheelEncoderPublisher:
 
   def update(self):
     if self.gopigo_on: # Running on actual robot
-      import gopigo
-      lwheel_enc = self.lwheel_dir * gopigo.enc_read(1) * .01 # cm's moved
-      rwheel_enc = self.rwheel_dir * gopigo.enc_read(0) * .01 # cm's moved
+      #import gopigo
+      lwheel_enc = self.lwheel_dir * self.leftCtr * .01 # cm's moved
+      rwheel_enc = self.rwheel_dir * self.rightCtr * .01 # cm's moved
 
       self.lwheel_encs = self.lwheel_encs[1:] + [lwheel_enc]
       self.rwheel_encs = self.rwheel_encs[1:] + [rwheel_enc]
@@ -81,6 +93,7 @@ class WheelEncoderPublisher:
       if self.rwheel_encs[-1] < 0: rwheel_angular_vel_enc = -rwheel_angular_vel_enc
       self.lwheel_angular_vel_enc_pub.publish(lwheel_angular_vel_enc)
       self.rwheel_angular_vel_enc_pub.publish(rwheel_angular_vel_enc)
+            
 
       self.time_prev_update = time_curr_update
 
@@ -88,14 +101,13 @@ class WheelEncoderPublisher:
       self.lwheel_angular_vel_enc_pub.publish(self.lwheel_angular_vel_control)
       self.rwheel_angular_vel_enc_pub.publish(self.rwheel_angular_vel_control)
       
-
   def spin(self):
     rospy.loginfo("Start gopigo_state_updater")
     rate = rospy.Rate(self.rate)
     rospy.on_shutdown(self.shutdown)
 
     while not rospy.is_shutdown():
-      self.update();
+      self.update()
       rate.sleep()
     rospy.spin()
 

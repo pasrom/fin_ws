@@ -4,6 +4,7 @@ import roslib
 
 # Messages
 from std_msgs.msg import Float32
+from std_msgs.msg import Int16
 
 # Issue commands to the GoPiGo motors to achieve the target velocity
 # Use a PID that compares the error based on encoder readings
@@ -26,10 +27,10 @@ class ControlsToMotors:
     self.R = rospy.get_param('~robot_wheel_radius', 0.03)
     self.pid_on = rospy.get_param('~pid_on',True)
     self.gopigo_on = rospy.get_param('~gopigo_on',False)
-    if self.gopigo_on:
-      import gopigo
-      import atexit
-      atexit.register(gopigo.stop)
+    #if self.gopigo_on:
+      #import gopigo
+      #import atexit
+      #atexit.register(gopigo.stop)
     # (Optional) Publish the computed angular velocity targets
     self.lwheel_angular_vel_target_pub = rospy.Publisher('lwheel_angular_vel_target', Float32, queue_size=10)
     self.rwheel_angular_vel_target_pub = rospy.Publisher('rwheel_angular_vel_target', Float32, queue_size=10)
@@ -49,7 +50,10 @@ class ControlsToMotors:
     # Read in tangential velocity targets
     self.lwheel_tangent_vel_target_sub = rospy.Subscriber('lwheel_tangent_vel_target', Float32, self.lwheel_tangent_vel_target_callback)
     self.rwheel_tangent_vel_target_sub = rospy.Subscriber('rwheel_tangent_vel_target', Float32, self.rwheel_tangent_vel_target_callback)
-
+    
+    # Publish the raw motor speed
+    self.lwheel_motor_speed_raw_pub = rospy.Publisher('robot/leftWheel', Int16, queue_size=10)
+    self.rwheel_motor_speed_raw_pub = rospy.Publisher('robot/rightWheel', Int16, queue_size=10)
 
     # Tangential velocity target
     self.lwheel_tangent_vel_target = 0;
@@ -158,14 +162,16 @@ class ControlsToMotors:
   # motor2 for right wheel.
   def motorcmd_2_robot(self, wheel='left', motor_command=0):
     if self.gopigo_on:
-      motor_command_raw = int(abs(motor_command))
-      import gopigo
+      #motor_command_raw = int(abs(motor_command))
+      #import gopigo
       if wheel == 'left':
-        if motor_command >= 0: gopigo.motor1(1,motor_command_raw)
-        elif motor_command < 0: gopigo.motor1(0,motor_command_raw)
+        self.lwheel_motor_speed_raw_pub.publish(motor_command)
+        #if motor_command >= 0: gopigo.motor1(1,motor_command_raw)
+        #elif motor_command < 0: gopigo.motor1(0,motor_command_raw)
       if wheel == 'right':
-        if motor_command >= 0: gopigo.motor2(1,motor_command_raw)
-        elif motor_command < 0: gopigo.motor2(0,motor_command_raw)
+        self.rwheel_motor_speed_raw_pub.publish(motor_command)
+        #if motor_command >= 0: gopigo.motor2(1,motor_command_raw)
+        #elif motor_command < 0: gopigo.motor2(0,motor_command_raw)
 
   def lwheel_update(self):
     # Compute target angular velocity
