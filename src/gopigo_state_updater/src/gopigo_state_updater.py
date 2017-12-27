@@ -7,7 +7,7 @@ import numpy
 
 # Messages
 from std_msgs.msg import Float32
-from std_msgs.msg import UInt64MultiArray
+from std_msgs.msg import UInt64
 
 # Query GoPiGo robot for left and right wheel encoders.
 # Publish the estimated left and right angular wheel velocities
@@ -21,7 +21,8 @@ class WheelEncoderPublisher:
     self.lwheel_angular_vel_control_pub = rospy.Subscriber('lwheel_angular_vel_control', Float32, self.lwheel_angular_vel_control_callback)
     self.rwheel_angular_vel_control_pub = rospy.Subscriber('rwheel_angular_vel_control', Float32, self.rwheel_angular_vel_control_callback)
 
-    self.LRwheel_encoder_pub = rospy.Subscriber('robot/inkLR', UInt64MultiArray, self.LRwheel_encoder_callback)
+    self.wheel_encoderL_pub = rospy.Subscriber('robot/inkL', UInt64, self.wheel_encoderL_callback)
+    self.wheel_encoderR_pub = rospy.Subscriber('robot/inkR', UInt64, self.wheel_encoderR_callback)
 
     self.lwheel_angular_vel_enc_pub = rospy.Publisher('lwheel_angular_vel_enc', Float32, queue_size=10)
     self.rwheel_angular_vel_enc_pub = rospy.Publisher('rwheel_angular_vel_enc', Float32, queue_size=10)
@@ -47,9 +48,11 @@ class WheelEncoderPublisher:
     self.lwheel_angular_vel_control = 0;
     
 
-  def LRwheel_encoder_callback(self, msg):
-    self.leftCtr = msg.data[0]
-    self.rightCtr = msg.data[1]
+  def wheel_encoderL_callback(self, msg):
+    self.leftCtr = msg.data
+
+  def wheel_encoderR_callback(self, msg):
+    self.rightCtr = msg.data
 
   # Really bad hack to get motor spin direction
   def lwheel_angular_vel_motor_callback(self,msg):
