@@ -85,7 +85,7 @@ int main(int argc, char **argv)
   std_msgs::UInt64 outPosR;
   outPosL.data = 0;
   outPosR.data = 0;
-  gpioPWM(Motor1Plus, 60);
+  
   while (ros::ok())
   {
     //arr.data= [posL,posR];
