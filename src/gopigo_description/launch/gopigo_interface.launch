@@ -5,7 +5,7 @@
   </node>-->
 
   <node pkg="gopigo_controller" type="gopigo_controller.py" name="gopigo_controller" output="screen">
-    <param name="rate" value="50" />
+    <param name="rate" value="30" />
     <param name="Kp" value="0.1" />
     <param name="Ki" value="0.05" />
     <param name="Kd" value="0.001" />
@@ -22,7 +22,7 @@
   </node>
 
   <node pkg="gopigo_state_updater" type="gopigo_state_updater.py" name="gopigo_state_updater" output="screen">
-    <param name="rate" value="5" />
+    <param name="rate" value="30" />
     <param name="err_tick_incr" value="5" />
     <param name="robot_wheel_radius" value="0.03" />
     <param name="gopigo_on" value="True" />
