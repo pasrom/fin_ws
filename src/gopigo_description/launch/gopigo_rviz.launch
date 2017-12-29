@@ -11,7 +11,7 @@
 
 
   <!-- Show in Rviz   -->
-  <node name="rviz" pkg="rviz" type="rviz"/>
-  <!--node name="rviz" pkg="rviz" type="rviz" args="-d $(find mybot_description)/launch/myrobot.rviz"/-->
+  <!--node name="rviz" pkg="rviz" type="rviz"/-->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gopigo_description)/launch/robot.rviz"/>
 
 </launch>
