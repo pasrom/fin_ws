@@ -22,7 +22,7 @@ static uint64_t posR = 0;
 
 void callbackLeftWheel(const std_msgs::Int16::ConstPtr& msg)
 {
-  ROS_INFO("Left: [%d]", msg->data);
+  //ROS_INFO("Left: [%d]", msg->data);
   if (msg->data > 0){
   gpioPWM(Motor1Minus, 0);
   gpioPWM(Motor1Plus, abs(msg->data));
@@ -38,7 +38,7 @@ void callbackLeftWheel(const std_msgs::Int16::ConstPtr& msg)
 
 void callbackRightWheel(const std_msgs::Int16::ConstPtr& msg)
 {
-  ROS_INFO("Right : [%d]", msg->data);
+  //ROS_INFO("Right : [%d]", msg->data);
   if (msg->data > 0){
     gpioPWM(Motor2Minus, 0);
     gpioPWM(Motor2Plus, abs(msg->data));
@@ -70,6 +70,7 @@ int main(int argc, char **argv)
 {
   if (gpioInitialise() < 0) return -1;
   ros::init(argc, argv, "robot_motor");
+  ROS_INFO("robot_motor init done!");
   ros::NodeHandle n;
 
   ros::Publisher encoderL_pub = n.advertise<std_msgs::UInt64>("robot/inkL", 50);
