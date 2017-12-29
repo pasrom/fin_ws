@@ -7,11 +7,18 @@ project(motor_cpp)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm.*|ARM.*)")
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
 )
+else ()
+find_package(catkin REQUIRED COMPONENTS
+  rospy
+  std_msgs
+)
+endif()
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -113,6 +120,7 @@ catkin_package(
 ## Build ##
 ###########
 
+
 #SET(GCC_COVERAGE_LINK_FLAGS "-lpigpio -lrt")
 
 ## Specify additional locations of header files
@@ -134,9 +142,17 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME} src/motor.cpp
-src/rotary_encoder.cpp)
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} -lpigpio -lrt)
+message("-- CMAKE_SYSTEM_PROCESSOR:      ${CMAKE_SYSTEM_PROCESSOR}")
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm.*|ARM.*)")
+    add_executable(${PROJECT_NAME}
+        src/motor.cpp
+        src/rotary_encoder.cpp
+        )
+    target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} -lpigpio -lrt)
+else ()
+    #target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+endif()
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
