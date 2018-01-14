@@ -17,9 +17,9 @@ class ControlsToMotors:
     self.Kd = rospy.get_param('~Kd', 1.0)
 
     # Wheel can turn ~17 ticks per second which is approx 5.34 rad / s when motor_cmd = 255
-    self.motor_max_angular_vel = rospy.get_param('~motor_max_angular_vel',5.32) 
+    self.motor_max_angular_vel = rospy.get_param('~motor_max_angular_vel',16.02212253) 
     # Wheel can turn ~6 ticks per second which is approx 5.34 rad / s when motor_cmd = 125
-    self.motor_min_angular_vel = rospy.get_param('~motor_min_angular_vel',1.28)
+    self.motor_min_angular_vel = rospy.get_param('~motor_min_angular_vel',5.183627878)
     # Corresponding motor commands
     self.motor_cmd_max = rospy.get_param('~motor_cmd_max',255)
     self.motor_cmd_min = rospy.get_param('~motor_cmd_min',110)
