@@ -8,7 +8,7 @@ from geometry_msgs.msg import Twist
 class NavTimed():
   def __init__(self):
     rospy.init_node('nav_timed')
-    self.cmd_vel_pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+    self.cmd_vel_pub = rospy.Publisher('robot/cmd_vel', Twist, queue_size=10)
     self.time_start = rospy.Time.now()
     self.time_to_run = rospy.get_param('~time_to_run',10)
     self.v_target = rospy.get_param('~v_target',0.1)

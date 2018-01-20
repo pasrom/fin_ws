@@ -24,6 +24,7 @@
 #define Motor2Minus 26
 #define radius 0.0325
 #define incr 20.0
+
 static uint64_t posL = 0;
 static uint64_t posR = 0;
 static uint64_t startL = 0;
@@ -95,8 +96,8 @@ int main(int argc, char **argv)
   ros::Publisher encoderR_pub = n.advertise<std_msgs::UInt64>("robot/inkR", 50);
   ros::Publisher encoderProTL_pub = n.advertise<std_msgs::UInt64>("robot/inkProTL", 50);
   ros::Publisher encoderProTR_pub = n.advertise<std_msgs::UInt64>("robot/inkProTR", 50);
-  ros::Publisher lwheel_angular_vel_enc_pub = n.advertise<std_msgs::Float32>("lwheel_angular_vel_enc", 50);
-  ros::Publisher rwheel_angular_vel_enc_pub = n.advertise<std_msgs::Float32>("rwheel_angular_vel_enc", 50);
+  ros::Publisher lwheel_angular_vel_enc_pub = n.advertise<std_msgs::Float32>("robot/lwheel_angular_vel_enc", 50);
+  ros::Publisher rwheel_angular_vel_enc_pub = n.advertise<std_msgs::Float32>("robot/rwheel_angular_vel_enc", 50);
   ros::Subscriber wheelL_sub = n.subscribe("robot/leftWheel", 50, callbackLeftWheel);
   ros::Subscriber wheelR_sub = n.subscribe("robot/rightWheel", 50, callbackRightWheel);
   ros::Rate loop_rate(rate);

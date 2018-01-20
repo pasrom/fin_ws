@@ -15,13 +15,13 @@ from geometry_msgs.msg import Point, Quaternion, Twist
 class OdomPublisher:
   def __init__(self):
     rospy.init_node('diffdrive_odom')
-    self.lwheel_angular_vel_enc_sub = rospy.Subscriber('lwheel_angular_vel_enc', Float32, self.lwheel_angular_vel_enc_callback)    
-    self.rwheel_angular_vel_enc_sub = rospy.Subscriber('rwheel_angular_vel_enc', Float32, self.rwheel_angular_vel_enc_callback)    
-    self.lwheel_tangent_vel_enc_pub = rospy.Publisher('lwheel_tangent_vel_enc', Float32, queue_size=10)
-    self.rwheel_tangent_vel_enc_pub = rospy.Publisher('rwheel_tangent_vel_enc', Float32, queue_size=10)
-    self.cmd_vel_enc_pub = rospy.Publisher('cmd_vel_enc', Twist, queue_size=10)
+    self.lwheel_angular_vel_enc_sub = rospy.Subscriber('robot/lwheel_angular_vel_enc', Float32, self.lwheel_angular_vel_enc_callback)    
+    self.rwheel_angular_vel_enc_sub = rospy.Subscriber('robot/rwheel_angular_vel_enc', Float32, self.rwheel_angular_vel_enc_callback)    
+    self.lwheel_tangent_vel_enc_pub = rospy.Publisher('robot/lwheel_tangent_vel_enc', Float32, queue_size=10)
+    self.rwheel_tangent_vel_enc_pub = rospy.Publisher('robot/rwheel_tangent_vel_enc', Float32, queue_size=10)
+    self.cmd_vel_enc_pub = rospy.Publisher('robot/cmd_vel_enc', Twist, queue_size=10)
 
-    self.odom_pub = rospy.Publisher('odom', Odometry, queue_size=10)
+    self.odom_pub = rospy.Publisher('robot/odom', Odometry, queue_size=10)
 
     self.L = rospy.get_param('~robot_wheel_separation_distance', 0.14) 
     self.R = rospy.get_param('~robot_wheel_radius', 0.03)

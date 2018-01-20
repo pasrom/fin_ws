@@ -9,9 +9,9 @@ from std_msgs.msg import Float32
 class CmdVelToDiffDriveMotors:
   def __init__(self):
     rospy.init_node('diffdrive_controller')
-    self.cmdvel_sub = rospy.Subscriber('cmd_vel', Twist, self.twistCallback)
-    self.lwheel_tangent_vel_target_pub = rospy.Publisher('lwheel_tangent_vel_target', Float32, queue_size=10)
-    self.rwheel_tangent_vel_target_pub = rospy.Publisher('rwheel_tangent_vel_target', Float32, queue_size=10)
+    self.cmdvel_sub = rospy.Subscriber('robot/cmd_vel', Twist, self.twistCallback)
+    self.lwheel_tangent_vel_target_pub = rospy.Publisher('robot/lwheel_tangent_vel_target', Float32, queue_size=10)
+    self.rwheel_tangent_vel_target_pub = rospy.Publisher('robot/rwheel_tangent_vel_target', Float32, queue_size=10)
 
     self.L = rospy.get_param('~robot_wheel_separation_distance', 0.14) 
     self.R = rospy.get_param('~robot_wheel_radius', 0.03)

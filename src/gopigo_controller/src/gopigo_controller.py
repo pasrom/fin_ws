@@ -32,24 +32,24 @@ class ControlsToMotors:
       #import atexit
       #atexit.register(gopigo.stop)
     # (Optional) Publish the computed angular velocity targets
-    self.lwheel_angular_vel_target_pub = rospy.Publisher('lwheel_angular_vel_target', Float32, queue_size=10)
-    self.rwheel_angular_vel_target_pub = rospy.Publisher('rwheel_angular_vel_target', Float32, queue_size=10)
+    self.lwheel_angular_vel_target_pub = rospy.Publisher('robot/lwheel_angular_vel_target', Float32, queue_size=10)
+    self.rwheel_angular_vel_target_pub = rospy.Publisher('robot/rwheel_angular_vel_target', Float32, queue_size=10)
 
     # (Optional) Publish the computed angular velocity control command
-    self.lwheel_angular_vel_control_pub = rospy.Publisher('lwheel_angular_vel_control', Float32, queue_size=10)
-    self.rwheel_angular_vel_control_pub = rospy.Publisher('rwheel_angular_vel_control', Float32, queue_size=10)
+    self.lwheel_angular_vel_control_pub = rospy.Publisher('robot/lwheel_angular_vel_control', Float32, queue_size=10)
+    self.rwheel_angular_vel_control_pub = rospy.Publisher('robot/rwheel_angular_vel_control', Float32, queue_size=10)
 
     # (Optional) Publish the computed angular velocity motor command
-    self.lwheel_angular_vel_motor_pub = rospy.Publisher('lwheel_angular_vel_motor', Float32, queue_size=10)
-    self.rwheel_angular_vel_motor_pub = rospy.Publisher('rwheel_angular_vel_motor', Float32, queue_size=10)
+    self.lwheel_angular_vel_motor_pub = rospy.Publisher('robot/lwheel_angular_vel_motor', Float32, queue_size=10)
+    self.rwheel_angular_vel_motor_pub = rospy.Publisher('robot/rwheel_angular_vel_motor', Float32, queue_size=10)
 
     # Read in encoders for PID control
-    self.lwheel_angular_vel_enc_sub = rospy.Subscriber('lwheel_angular_vel_enc', Float32, self.lwheel_angular_vel_enc_callback)    
-    self.rwheel_angular_vel_enc_sub = rospy.Subscriber('rwheel_angular_vel_enc', Float32, self.rwheel_angular_vel_enc_callback)    
+    self.lwheel_angular_vel_enc_sub = rospy.Subscriber('robot/lwheel_angular_vel_enc', Float32, self.lwheel_angular_vel_enc_callback)    
+    self.rwheel_angular_vel_enc_sub = rospy.Subscriber('robot/rwheel_angular_vel_enc', Float32, self.rwheel_angular_vel_enc_callback)    
 
     # Read in tangential velocity targets
-    self.lwheel_tangent_vel_target_sub = rospy.Subscriber('lwheel_tangent_vel_target', Float32, self.lwheel_tangent_vel_target_callback)
-    self.rwheel_tangent_vel_target_sub = rospy.Subscriber('rwheel_tangent_vel_target', Float32, self.rwheel_tangent_vel_target_callback)
+    self.lwheel_tangent_vel_target_sub = rospy.Subscriber('robot/lwheel_tangent_vel_target', Float32, self.lwheel_tangent_vel_target_callback)
+    self.rwheel_tangent_vel_target_sub = rospy.Subscriber('robot/rwheel_tangent_vel_target', Float32, self.rwheel_tangent_vel_target_callback)
     
     # Publish the raw motor speed
     self.lwheel_motor_speed_raw_pub = rospy.Publisher('robot/leftWheel', Int16, queue_size=10)

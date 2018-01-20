@@ -15,17 +15,17 @@ class WheelEncoderPublisher:
   def __init__(self):
     rospy.init_node('gopigo_state_updater')
     # Read in tangential velocity targets
-    self.lwheel_angular_vel_motor_sub = rospy.Subscriber('lwheel_angular_vel_motor', Float32, self.lwheel_angular_vel_motor_callback)
-    self.rwheel_angular_vel_motor_sub = rospy.Subscriber('rwheel_angular_vel_motor', Float32, self.rwheel_angular_vel_motor_callback)
+    self.lwheel_angular_vel_motor_sub = rospy.Subscriber('robot/lwheel_angular_vel_motor', Float32, self.lwheel_angular_vel_motor_callback)
+    self.rwheel_angular_vel_motor_sub = rospy.Subscriber('robot/rwheel_angular_vel_motor', Float32, self.rwheel_angular_vel_motor_callback)
 
-    self.lwheel_angular_vel_control_pub = rospy.Subscriber('lwheel_angular_vel_control', Float32, self.lwheel_angular_vel_control_callback)
-    self.rwheel_angular_vel_control_pub = rospy.Subscriber('rwheel_angular_vel_control', Float32, self.rwheel_angular_vel_control_callback)
+    self.lwheel_angular_vel_control_pub = rospy.Subscriber('robot/lwheel_angular_vel_control', Float32, self.lwheel_angular_vel_control_callback)
+    self.rwheel_angular_vel_control_pub = rospy.Subscriber('robot/rwheel_angular_vel_control', Float32, self.rwheel_angular_vel_control_callback)
 
     self.wheel_encoderL_pub = rospy.Subscriber('robot/inkL', UInt64, self.wheel_encoderL_callback)
     self.wheel_encoderR_pub = rospy.Subscriber('robot/inkR', UInt64, self.wheel_encoderR_callback)
 
-    self.lwheel_angular_vel_enc_pub = rospy.Publisher('lwheel_angular_vel_enc', Float32, queue_size=10)
-    self.rwheel_angular_vel_enc_pub = rospy.Publisher('rwheel_angular_vel_enc', Float32, queue_size=10)
+    self.lwheel_angular_vel_enc_pub = rospy.Publisher('robot/lwheel_angular_vel_enc', Float32, queue_size=10)
+    self.rwheel_angular_vel_enc_pub = rospy.Publisher('robot/rwheel_angular_vel_enc', Float32, queue_size=10)
 
     self.rate = rospy.get_param('~rate', 10)
     self.err_tick_incr = rospy.get_param('~err_tick_incr',20) # Filter out clearly erroneous encoder readings
