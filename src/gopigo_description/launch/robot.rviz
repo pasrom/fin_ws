@@ -5,14 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /Status1
-        - /RobotModel1
-        - /TF1/Tree1/odom1
-        - /TF1/Tree1/odom1/base_link1
-        - /Odometry1
-        - /Odometry1/Shape1
-        - /Odometry1/Covariance1
-        - /Image1
+        - /Pose1/Status1
       Splitter Ratio: 0.5
     Tree Height: 325
   - Class: rviz/Selection
@@ -99,6 +92,8 @@ Visualization Manager:
           Value: true
         right_wheel:
           Value: false
+        vehicle:
+          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
@@ -111,6 +106,8 @@ Visualization Manager:
               {}
             right_wheel:
               {}
+          vehicle:
+            {}
       Update Interval: 0
       Value: true
     - Angle Tolerance: 0.100000001
@@ -129,7 +126,7 @@ Visualization Manager:
           Color: 204; 51; 204
           Scale: 1
           Value: true
-        Value: true
+        Value: false
       Enabled: true
       Keep: 0
       Name: Odometry
@@ -149,7 +146,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /camera/image_raw
+      Image Topic: /orb/frame_now
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -159,9 +156,78 @@ Visualization Manager:
       Transport Hint: compressed
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: RGB8
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.00999999978
+      Style: Flat Squares
+      Topic: /orb/point_cloud_ref
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 25; 255; 0
+      Enabled: true
+      Head Diameter: 0.300000012
+      Head Length: 0.200000003
+      Length: 0.300000012
+      Line Style: Lines
+      Line Width: 0.0299999993
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.0299999993
+      Shaft Diameter: 0.100000001
+      Shaft Length: 0.100000001
+      Topic: /orb/camera_path
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.100000001
+      Class: rviz/Pose
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.300000012
+      Head Radius: 0.100000001
+      Name: Pose
+      Shaft Length: 0.5
+      Shaft Radius: 0.0500000007
+      Shape: Arrow
+      Topic: /orb/vehicle_pose
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
+    Default Light: true
     Fixed Frame: odom
     Frame Rate: 30
   Name: root
@@ -183,7 +249,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 8.67021561
+      Distance: 2.15632463
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -198,10 +264,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.335398138
+      Pitch: 0.450400025
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.30539751
+      Yaw: 4.04718018
     Saved: ~
 Window Geometry:
   Displays:
@@ -221,5 +287,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 57
+  X: 0
   Y: 24
