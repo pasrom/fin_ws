@@ -18,6 +18,7 @@ class WheelEncoderPublisher:
     self.lwheel_angular_vel_motor_sub = rospy.Subscriber('robot/lwheel_angular_vel_motor', Float32, self.lwheel_angular_vel_motor_callback)
     self.rwheel_angular_vel_motor_sub = rospy.Subscriber('robot/rwheel_angular_vel_motor', Float32, self.rwheel_angular_vel_motor_callback)
 
+	# for the realy bad hack
     self.lwheel_angular_vel_control_pub = rospy.Subscriber('robot/lwheel_angular_vel_control', Float32, self.lwheel_angular_vel_control_callback)
     self.rwheel_angular_vel_control_pub = rospy.Subscriber('robot/rwheel_angular_vel_control', Float32, self.rwheel_angular_vel_control_callback)
 
