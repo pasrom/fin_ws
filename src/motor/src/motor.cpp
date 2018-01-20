@@ -131,6 +131,7 @@ int main(int argc, char **argv)
       //std::cout << "posDif=" << posL - startL << std::endl;
       outLwheel_enc.data = (float)directionL * (posL - startL) / incr *2*M_PI/dt;
       outRwheel_enc.data = (float)directionR * (posR - startR) / incr *2*M_PI/dt;
+	  //std::cout << "posDif=" << posL - startL << std::endl;
       encoderProTL_pub.publish(outPosProTL);
       encoderProTR_pub.publish(outPosProTR);
       lwheel_angular_vel_enc_pub.publish(outLwheel_enc);
