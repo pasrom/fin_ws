@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- Launch the image republisher to minimize network traffic -->
+	<node name="republish" type="republish" pkg="image_transport" output="screen"
+		args="compressed in:=/camera/image_raw raw out:=/camera/camera_eigen" />
+
+	<!-- Launch the pose updater -->
+	<include file="$(find nav_behaviors)/launch/nav_behaviors.launch"/>
+
+	<!-- Launch the rqt_gui -->
+	<node name="my_rqt_gui" type="rqt_gui" pkg="rqt_gui" 
+		args="--perspective-file  $(find fin_starter)/launch/rqt_gui_default.perspective" />	
+
+	<node name="my_ORB_SLAM" type="Mono" pkg="ORB_SLAM2" 
+		args="$(find ORB_SLAM2)/src/scripts/ORBvoc.txt $(find ORB_SLAM2)/src/scripts/Logitech640x480.yaml" />
+
+</launch>
