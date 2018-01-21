@@ -66,7 +66,7 @@ class OdomPublisher:
 
   def pose_next(self, lwheel_tangent_vel_enc, rwheel_tangent_vel_enc):
     x = self.pose['x']; y = self.pose['y']; th = self.pose['th']
-    #print("x: ", x," y:", y," th:", th)
+    #print("x: ", x," y:", y," th:", th, " tangentL:",lwheel_tangent_vel_enc," tangentR:",rwheel_tangent_vel_enc)
     if (self.orb_camera_pose_frame_id == "" and ~self.orb_pose_arrived ) : #self.cnt > 50 or 
       x = 0.0; y= 0.0; th = 0.0
       self.pose_arriving = 0
