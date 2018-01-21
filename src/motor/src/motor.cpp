@@ -1,4 +1,3 @@
-
 #include "ros/ros.h"
 
 #include "std_msgs/String.h"
@@ -16,6 +15,8 @@
 #include <float.h>
 
 #include "rotary_encoder.hpp"
+#include "Kalman.hpp"
+#include <cmath>
 
 #define rate 100
 #define Motor1Plus 19
@@ -32,6 +33,8 @@ static uint64_t startR = 0;
 static int16_t directionL = 0;
 static int16_t directionR = 0;
 static int cnt = 0;
+Kalman * myKalmanL;
+Kalman * myKalmanR;
 
 void callbackLeftWheel(const std_msgs::Int16::ConstPtr& msg)
 {
@@ -61,7 +64,7 @@ void callbackRightWheel(const std_msgs::Int16::ConstPtr& msg)
     directionR = 1;
   } else {
     gpioPWM(Motor2Plus, 0);
-    gpioPWM(Motor2Minus, abs((int16_t)((float)msg->data*0.9)));
+    gpioPWM(Motor2Minus, abs((int16_t)((float)msg->data)));
     directionR = -1;
   }
   if (msg->data == 0) {
@@ -115,13 +118,15 @@ int main(int argc, char **argv)
   outPosR.data = 0;
   struct timespec timeStruct;
   float timeOldS = 0.0;
+  myKalmanL = new Kalman(0.0625, 0.5, 1000.0, 0.0);
+  myKalmanR = new Kalman(0.0625, 0.5, 1000.0, 0.0);
 
   while (ros::ok())
   {
     //arr.data= [posL,posR];
     outPosL.data = posL;
     outPosR.data = posR;
-	  if(cnt % (int)(rate*0.2) == 0){
+	  if(cnt % (int)(rate*0.02) == 0){
       outPosProTL.data = posL - startL;
       outPosProTR.data = posR - startR;
       clock_gettime(CLOCK_MONOTONIC, &timeStruct);
@@ -129,9 +134,17 @@ int main(int argc, char **argv)
       float dt = timeNowS-timeOldS;
       //std::cout << "dt=" << dt;
       //std::cout << "posDif=" << posL - startL << std::endl;
-      outLwheel_enc.data = (float)directionL * (posL - startL) / incr *2*M_PI/dt;
-      outRwheel_enc.data = (float)directionR * (posR - startR) / incr *2*M_PI/dt;
-	  //std::cout << "posDif=" << posL - startL << std::endl;
+      outLwheel_enc.data = myKalmanL->getFilteredValue((float)directionL * (posL - startL) / incr *2*M_PI/dt);
+      outRwheel_enc.data = myKalmanR->getFilteredValue((float)directionR * (posR - startR) / incr *2*M_PI/dt);
+      if (abs(outLwheel_enc.data) < 0.001){
+        myKalmanL->setZoZero(0.0);
+        outLwheel_enc.data = 0.0;
+      }
+      if(abs(outRwheel_enc.data) < 0.001){
+        myKalmanR->setZoZero(0.0);
+        outRwheel_enc.data  =0.0;
+      }
+	    //std::cout << "temp=" << temp << std::endl;
       encoderProTL_pub.publish(outPosProTL);
       encoderProTR_pub.publish(outPosProTR);
       lwheel_angular_vel_enc_pub.publish(outLwheel_enc);
