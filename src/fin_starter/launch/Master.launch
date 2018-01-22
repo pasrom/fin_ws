@@ -14,8 +14,12 @@
 	<node name="my_ORB_SLAM" type="Mono" pkg="ORB_SLAM2" 
 		args="$(find ORB_SLAM2)/src/scripts/ORBvoc.txt $(find ORB_SLAM2)/src/scripts/Logitech640x480.yaml" />
 
-
 	<!-- Launch rviz -->
 	<include file="$(find gopigo_description)/launch/gopigo_rviz.launch"/>
 
+	<!-- Launch map creator with Gaussian counters 
+		 You can change the behaviour in the args of the mapper
+	-->
+	<node name="my_ORB_SLAM_mapper" type="Monosub2" pkg="ORB_SLAM2" output="screen"
+		args="20 1 10 -15 20 -10 0.55 0.50 1 5 0 0 1 75"/>
 </launch>
