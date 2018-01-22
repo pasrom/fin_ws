@@ -1,4 +1,4 @@
-# gopigo_ws
+# fin_ws
 
 Using ROS with a GoPiGo differential drive robot
 
