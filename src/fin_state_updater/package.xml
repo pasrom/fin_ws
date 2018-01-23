@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>gopigo_controller</name>
+  <name>fin_state_updater</name>
   <version>0.0.0</version>
-  <description>The gopigo_controller package</description>
+  <description>The fin_state_updater package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/gopigo_controller</url> -->
+  <!-- <url type="website">http://wiki.ros.org/fin_state_updater</url> -->
 
 
   <!-- Author tags are optional, mutiple are allowed, one per tag -->

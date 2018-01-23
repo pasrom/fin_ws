@@ -4,7 +4,7 @@
   <!--<node pkg="motor_cpp" type="motor_cpp" name="motor_cpp" launch-prefix="sudo" output="screen">
   </node>-->
 
-  <node pkg="gopigo_controller" type="gopigo_controller.py" name="gopigo_controller" output="screen">
+  <node pkg="fin_controller" type="fin_controller.py" name="fin_controller" output="screen">
     <param name="rate" value="50" />
 	<!-- Kp crit = 0.7 -> Kp =0.35 -->
     <param name="Kp" value="0.42" />
@@ -19,14 +19,14 @@
     <param name="motor_cmd_min" value="80" />
     <param name="robot_wheel_radius" value="0.0325" />
     <param name="pid_on" value="True" />
-    <param name="gopigo_on" value="True" />
+    <param name="fin_on" value="True" />
   </node>
 
-  <!--<node pkg="gopigo_state_updater" type="gopigo_state_updater.py" name="gopigo_state_updater" output="screen">
+  <!--<node pkg="fin_state_updater" type="fin_state_updater.py" name="fin_state_updater" output="screen">
     <param name="rate" value="10" />
     <param name="err_tick_incr" value="5" />
     <param name="robot_wheel_radius" value="0.0325" />
-    <param name="gopigo_on" value="True" />
+    <param name="fin_on" value="True" />
   </node>-->
 
 	<!--<include file="$(find video_stream_opencv)/launch/camera.launch"/>-->

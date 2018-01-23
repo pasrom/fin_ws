@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <launch>
 	<include file="$(find video_stream_opencv)/launch/camera.launch"/>
-	<include file="$(find gopigo_description)/launch/gopigo_interface.launch"/>
+	<include file="$(find fin_description)/launch/fin_interface.launch"/>
 </launch>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <param name="robot_description" command="$(find xacro)/xacro.py '$(find gopigo_description)/urdf/gopigo.xacro'"/>
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find fin_description)/urdf/fin.xacro'"/>
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <param name="use_gui" value="False"/>
@@ -12,6 +12,6 @@
 
   <!-- Show in Rviz   -->
   <!--node name="rviz" pkg="rviz" type="rviz"/-->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gopigo_description)/launch/robot.rviz"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find fin_description)/launch/robot.rviz"/>
 
 </launch>

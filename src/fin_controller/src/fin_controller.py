@@ -10,7 +10,7 @@ from std_msgs.msg import Int16
 # Use a PID that compares the error based on encoder readings
 class ControlsToMotors:
   def __init__(self):
-    rospy.init_node('gopigo_controller')
+    rospy.init_node('fin_controller')
     self.rate = rospy.get_param('~rate', 50)
     self.Kp = rospy.get_param('~Kp', 1.0)
     self.Ki = rospy.get_param('~Ki', 1.0)
@@ -26,11 +26,11 @@ class ControlsToMotors:
 
     self.R = rospy.get_param('~robot_wheel_radius', 0.03)
     self.pid_on = rospy.get_param('~pid_on',True)
-    self.gopigo_on = rospy.get_param('~gopigo_on',False)
-    #if self.gopigo_on:
-      #import gopigo
+    self.fin_on = rospy.get_param('~fin_on',False)
+    #if self.fin_on:
+      #import fin
       #import atexit
-      #atexit.register(gopigo.stop)
+      #atexit.register(fin.stop)
     # (Optional) Publish the computed angular velocity targets
     self.lwheel_angular_vel_target_pub = rospy.Publisher('robot/lwheel_angular_vel_target', Float32, queue_size=10)
     self.rwheel_angular_vel_target_pub = rospy.Publisher('robot/rwheel_angular_vel_target', Float32, queue_size=10)
@@ -161,17 +161,17 @@ class ControlsToMotors:
   # motor1 for left wheel. motor1(0, ?) tells wheel to move backwards. motor1(1, ?) tells wheel to move forwards
   # motor2 for right wheel.
   def motorcmd_2_robot(self, wheel='left', motor_command=0):
-    if self.gopigo_on:
+    if self.fin_on:
       #motor_command_raw = int(abs(motor_command))
-      #import gopigo
+      #import fin
       if wheel == 'left':
         self.lwheel_motor_speed_raw_pub.publish(motor_command)
-        #if motor_command >= 0: gopigo.motor1(1,motor_command_raw)
-        #elif motor_command < 0: gopigo.motor1(0,motor_command_raw)
+        #if motor_command >= 0: fin.motor1(1,motor_command_raw)
+        #elif motor_command < 0: fin.motor1(0,motor_command_raw)
       if wheel == 'right':
         self.rwheel_motor_speed_raw_pub.publish(motor_command)
-        #if motor_command >= 0: gopigo.motor2(1,motor_command_raw)
-        #elif motor_command < 0: gopigo.motor2(0,motor_command_raw)
+        #if motor_command >= 0: fin.motor2(1,motor_command_raw)
+        #elif motor_command < 0: fin.motor2(0,motor_command_raw)
 
   def lwheel_update(self):
     # Compute target angular velocity
@@ -209,7 +209,7 @@ class ControlsToMotors:
 
   # When given no commands for some time, do not move
   def spin(self):
-    rospy.loginfo("Start gopigo_controller")
+    rospy.loginfo("Start fin_controller")
     rate = rospy.Rate(self.rate)
     
     rospy.on_shutdown(self.shutdown)
@@ -221,7 +221,7 @@ class ControlsToMotors:
     rospy.spin();
 
   def shutdown(self):
-    rospy.loginfo("Stop gopigo_controller")
+    rospy.loginfo("Stop fin_controller")
   	# Stop message
     self.lwheel_angular_vel_target_pub.publish(0)
     self.rwheel_angular_vel_target_pub.publish(0)

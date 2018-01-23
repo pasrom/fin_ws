@@ -13,7 +13,7 @@ from std_msgs.msg import UInt64
 # Publish the estimated left and right angular wheel velocities
 class WheelEncoderPublisher:
   def __init__(self):
-    rospy.init_node('gopigo_state_updater')
+    rospy.init_node('fin_state_updater')
     # Read in tangential velocity targets
     self.lwheel_angular_vel_motor_sub = rospy.Subscriber('robot/lwheel_angular_vel_motor', Float32, self.lwheel_angular_vel_motor_callback)
     self.rwheel_angular_vel_motor_sub = rospy.Subscriber('robot/rwheel_angular_vel_motor', Float32, self.rwheel_angular_vel_motor_callback)
@@ -31,13 +31,13 @@ class WheelEncoderPublisher:
     self.rate = rospy.get_param('~rate', 10)
     self.err_tick_incr = rospy.get_param('~err_tick_incr',20) # Filter out clearly erroneous encoder readings
     self.time_prev_update = rospy.Time.now();
-    self.gopigo_on = rospy.get_param('~gopigo_on',True)
+    self.fin_on = rospy.get_param('~fin_on',True)
     self.leftCtr = 0
     self.rightCtr = 0
-    if self.gopigo_on:
-      #import gopigo   
-      #self.lwheel_encslwheel_encs = [gopigo.enc_read(1)]*5
-      #self.rwheel_encs = [gopigo.enc_read(0)]*5
+    if self.fin_on:
+      #import fin   
+      #self.lwheel_encslwheel_encs = [fin.enc_read(1)]*5
+      #self.rwheel_encs = [fin.enc_read(0)]*5
       self.lwheel_encs = [self.leftCtr]*5
       self.rwheel_encs = [self.rightCtr]*5
     self.R = rospy.get_param('~robot_wheel_radius', .03)
@@ -74,8 +74,8 @@ class WheelEncoderPublisher:
     return rads
 
   def update(self):
-    if self.gopigo_on: # Running on actual robot
-      #import gopigo
+    if self.fin_on: # Running on actual robot
+      #import fin
       lwheel_enc = self.lwheel_dir * self.leftCtr * .01 # cm's moved
       rwheel_enc = self.rwheel_dir * self.rightCtr * .01 # cm's moved
 
@@ -106,7 +106,7 @@ class WheelEncoderPublisher:
       self.rwheel_angular_vel_enc_pub.publish(self.rwheel_angular_vel_control)
       
   def spin(self):
-    rospy.loginfo("Start gopigo_state_updater")
+    rospy.loginfo("Start fin_state_updater")
     rate = rospy.Rate(self.rate)
     rospy.on_shutdown(self.shutdown)
 
@@ -116,7 +116,7 @@ class WheelEncoderPublisher:
     rospy.spin()
 
   def shutdown(self):
-    rospy.loginfo("Stop gopigo_state_updater")
+    rospy.loginfo("Stop fin_state_updater")
     # Stop message
     self.lwheel_angular_vel_enc_pub.publish(0)
     self.rwheel_angular_vel_enc_pub.publish(0)
