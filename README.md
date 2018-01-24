@@ -1,6 +1,5 @@
 # fin_ws
 
-Using ROS with a GoPiGo differential drive robot
+Using ROS with a Raspberry Pi and two motors to do a differential drive.
 
-For more information on running the code:
-http://www.moorerobots.com
+
