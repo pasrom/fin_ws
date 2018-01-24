@@ -9,7 +9,7 @@ import numpy
 from std_msgs.msg import Float32
 from std_msgs.msg import UInt64
 
-# Query GoPiGo robot for left and right wheel encoders.
+# Query fin robot for left and right wheel encoders.
 # Publish the estimated left and right angular wheel velocities
 class WheelEncoderPublisher:
   def __init__(self):

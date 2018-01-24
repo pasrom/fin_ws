@@ -6,7 +6,7 @@ import roslib
 from std_msgs.msg import Float32
 from std_msgs.msg import Int16
 
-# Issue commands to the GoPiGo motors to achieve the target velocity
+# Issue commands to the fin motors to achieve the target velocity
 # Use a PID that compares the error based on encoder readings
 class ControlsToMotors:
   def __init__(self):
