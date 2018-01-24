@@ -6,9 +6,10 @@ import numpy
 import tf
 
 # Messages
-from std_msgs.msg import Float32
+from std_msgs.msg import Float32, Int8
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point, Quaternion, Twist, PoseStamped
+from sensor_msgs.msg import Joy
 
 # Use left and right angular velocities to compute robot unicycle velocities
 # Publish the estimated velocity update
@@ -31,7 +32,8 @@ class OdomPublisher:
     self.frame_id = rospy.get_param('~frame_id','/odom')
     self.child_frame_id = rospy.get_param('~child_frame_id','/base_link')
 
-    self.orb_camera_pose_pub = rospy.Subscriber('orb/camera_pose', PoseStamped, self.orb_camera_pose_callback)    
+    self.orbSlamStatus_sub = rospy.Subscriber('orb/orb_slam_status', Int8, self.orbSlamStatus_sub_callback)    
+    self.sub_joy = rospy.Subscriber('joy', Joy, self.sub_joy_callback)    
    
     self.tf_broadcaster = tf.TransformBroadcaster()
 
@@ -40,12 +42,11 @@ class OdomPublisher:
     self.pose = {'x':0, 'y': 0, 'th': 0}
     self.time_prev_update = rospy.Time.now();
 
-    # get the camera pose from the orb slam
-    self.orb_camera_pose = PoseStamped();
-    self.orb_camera_pose_start = PoseStamped();
-    self.orb_camera_pose_stop = PoseStamped();
-    self.orb_pose_arrived = False
-    self.orb_camera_pose_frame_id = ""
+  def sub_joy_callback(self, msg):
+    if msg.buttons[5] == 1:
+      self.pose['x'] = 0
+      self.pose['y'] = 0
+      self.pose['th'] = 0
 
   def lwheel_angular_vel_enc_callback(self, msg):
     self.lwheel_angular_vel_enc = msg.data
@@ -53,11 +54,11 @@ class OdomPublisher:
   def rwheel_angular_vel_enc_callback(self, msg):
     self.rwheel_angular_vel_enc = msg.data
 
-  def orb_camera_pose_callback(self, msg):
-    self.orb_camera_pose = msg.pose
-    self.orb_camera_pose_frame_id = msg.header.frame_id
-    if msg.header.frame_id != "":
-      self.orb_pose_arrived = True
+  def orbSlamStatus_sub_callback(self, msg):
+    if msg.data == 1:
+      self.pose['x'] = 0
+      self.pose['y'] = 0
+      self.pose['th'] = 0
 
   # Compute angular velocity target
   def angularvel_2_tangentvel(self,angular_vel):
@@ -67,10 +68,10 @@ class OdomPublisher:
   def pose_next(self, lwheel_tangent_vel_enc, rwheel_tangent_vel_enc):
     x = self.pose['x']; y = self.pose['y']; th = self.pose['th']
     #print("x: ", x," y:", y," th:", th, " tangentL:",lwheel_tangent_vel_enc," tangentR:",rwheel_tangent_vel_enc)
-    if (self.orb_camera_pose_frame_id == "" and ~self.orb_pose_arrived ) : #self.cnt > 50 or 
-      x = 0.0; y= 0.0; th = 0.0
-      self.pose_arriving = 0
-      #print("pose not arrived!")
+    #if (self.orb_camera_pose_frame_id == "" and ~self.orb_pose_arrived ) : #self.cnt > 50 or 
+    #  x = 0.0; y= 0.0; th = 0.0
+    #  self.pose_arriving = 0
+    #  #print("pose not arrived!")
 
     time_curr_update = rospy.Time.now()
 
