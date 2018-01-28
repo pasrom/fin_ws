@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
 	<node pkg="motor_cpp" type="motor_cpp" name="motor">
-	<include file="$(find fin_description)/launch/fin_interface.launch"/>
 	</node>
+	<include file="$(find fin_description)/launch/fin_interface.launch"/>
 </launch>
