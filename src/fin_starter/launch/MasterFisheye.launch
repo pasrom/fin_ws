@@ -38,4 +38,6 @@
 	  </node>
 
   	<node pkg="joy" type="joy_node" name="joystick"/>
+	<!-- Launch pure pursuit -->
+	<include file="$(find fin_starter)/launch/pure_pursuit.launch"/>
 </launch>
