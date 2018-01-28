@@ -76,12 +76,17 @@ class ControlsToMotors:
   # Read in tangential velocity targets
   # ==================================================
   def lwheel_tangent_vel_target_callback(self, msg):
-    if (~math.isnan(msg.data)):
+    if (not math.isnan(msg.data)):
       self.lwheel_tangent_vel_target = msg.data
+    else:
+      self.lwheel_tangent_vel_target = 0.0
 
   def rwheel_tangent_vel_target_callback(self, msg):
-    if (~math.isnan(msg.data)):
+    if (not math.isnan(msg.data)):
+      #print("value",msg.data,math.isnan(msg.data))
       self.rwheel_tangent_vel_target = msg.data
+    else:
+      self.rwheel_tangent_vel_target = 0.0
 
   # ==================================================
   # Read in encoder readings for PID
