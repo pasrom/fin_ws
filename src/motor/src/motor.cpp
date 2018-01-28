@@ -33,6 +33,9 @@ static uint64_t startR = 0;
 static int16_t directionL = 0;
 static int16_t directionR = 0;
 static int cnt = 0;
+// realy bad hack, because the encoder is not that good...
+static bool stopL = false;
+static bool stopR = false;
 Kalman * myKalmanL;
 Kalman * myKalmanR;
 
@@ -40,15 +43,18 @@ void callbackLeftWheel(const std_msgs::Int16::ConstPtr& msg)
 {
   //ROS_INFO("Left: [%d]", msg->data);
   if (msg->data > 0){
+  stopL = false;
   gpioPWM(Motor1Minus, 0);
   gpioPWM(Motor1Plus, abs(msg->data));
   directionL = 1;
   } else {
+  stopL = false;
   gpioPWM(Motor1Plus, 0);
   gpioPWM(Motor1Minus, abs(msg->data));
   directionL = -1;
   }
   if (msg->data == 0) {
+	stopL = true;
     gpioPWM(Motor1Minus, 0);
     gpioPWM(Motor1Plus, 0);
     directionL = 1;
@@ -59,15 +65,18 @@ void callbackRightWheel(const std_msgs::Int16::ConstPtr& msg)
 {
   //ROS_INFO("Right : [%d]", msg->data);
   if (msg->data > 0){
+	stopR = false;
     gpioPWM(Motor2Minus, 0);
     gpioPWM(Motor2Plus, abs(msg->data));
     directionR = 1;
   } else {
+	stopR = false;
     gpioPWM(Motor2Plus, 0);
     gpioPWM(Motor2Minus, abs((int16_t)((float)msg->data)));
     directionR = -1;
   }
   if (msg->data == 0) {
+	stopR = true;
     gpioPWM(Motor2Minus, 0);
     gpioPWM(Motor2Plus, 0);
     directionR = 1;
@@ -77,13 +86,17 @@ void callbackRightWheel(const std_msgs::Int16::ConstPtr& msg)
 
 void callbackL(int way)
 {
-   posL += way;
+   	if(!stopL) {
+   		posL += way;
+	}	
    //std::cout << "posL=" << posL << std::endl;
 }
 
 void callbackR(int way)
 {
-   posR += way;
+   	if(!stopR){
+   		posR += way;
+	}
   //std::cout << "posR=" << posR << std::endl;
 }
 
